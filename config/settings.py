@@ -61,6 +61,9 @@ INSTALLED_APPS = [
     "logistics",
 
 
+    'drf_spectacular',
+
+
 ]
 
 MIDDLEWARE = [
@@ -144,6 +147,8 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 #------jwt-----
 
@@ -190,4 +195,11 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Plateforme Véhicules API',
+    'DESCRIPTION': 'Documentation officielle de l’API',
+    'VERSION': '1.0.0',
+}
 

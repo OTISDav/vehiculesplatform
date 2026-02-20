@@ -6,3 +6,4 @@ python-dotenv==1.0.1
 Pillow==10.4.0
 django-cors-headers==4.4.0
 stripe==10.10.0
+drf-spectacular
