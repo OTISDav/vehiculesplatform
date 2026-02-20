@@ -62,75 +62,75 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 
-from django.contrib import admin
-from logistics.models import TransportRequest
-
-
-@admin.register(TransportRequest)
-class TransportRequestAdmin(admin.ModelAdmin):
-    list_display = (
-        'id', 'vehicle', 'client_name',
-        'origin_country', 'destination_city',
-        'estimated_cost_display', 'advance_paid_display',
-        'status', 'created_at'
-    )
-    list_filter = ('status', 'origin_country')
-    search_fields = ('client_name', 'client_email', 'vehicle__title', 'origin_country')
-    readonly_fields = ('created_at', 'updated_at')
-    list_editable = ('status',)
-    actions = ['send_quote', 'mark_in_transit', 'mark_arrived']
-
-    fieldsets = (
-        ('Véhicule', {
-            'fields': ('vehicle',)
-        }),
-        ('Client', {
-            'fields': ('client_name', 'client_email', 'client_phone', 'destination_city')
-        }),
-        ('Transport', {
-            'fields': (
-                'origin_country', 'origin_city',
-                'estimated_cost', 'transport_note',
-                'customs_note'
-            )
-        }),
-        ('Suivi financier', {
-            'fields': ('advance_paid',)
-        }),
-        ('Statut & Notes', {
-            'fields': ('status', 'admin_note')
-        }),
-        ('Dates', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-
-    def estimated_cost_display(self, obj):
-        if obj.estimated_cost:
-            return f"{obj.estimated_cost:,.0f} FCFA"
-        return "—"
-    estimated_cost_display.short_description = "Coût estimé"
-
-    def advance_paid_display(self, obj):
-        color = "green" if obj.advance_paid > 0 else "gray"
-        return format_html(
-            '<span style="color:{}">{} FCFA</span>',
-            color, f"{obj.advance_paid:,.0f}"
-        )
-    advance_paid_display.short_description = "Avance payée"
-
-    @admin.action(description="📧 Marquer devis envoyé")
-    def send_quote(self, request, queryset):
-        count = queryset.update(status='quote_sent')
-        self.message_user(request, f"Devis marqué comme envoyé pour {count} demande(s).")
-
-    @admin.action(description="🚢 Marquer en transit")
-    def mark_in_transit(self, request, queryset):
-        count = queryset.update(status='in_transit')
-        self.message_user(request, f"{count} véhicule(s) marqué(s) en transit.")
-
-    @admin.action(description="🏁 Marquer arrivé au Togo")
-    def mark_arrived(self, request, queryset):
-        count = queryset.update(status='arrived')
-        self.message_user(request, f"{count} véhicule(s) arrivé(s) au Togo.")
+# from django.contrib import admin
+# from logistics.models import TransportRequest
+#
+#
+# @admin.register(TransportRequest)
+# class TransportRequestAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'id', 'vehicle', 'client_name',
+#         'origin_country', 'destination_city',
+#         'estimated_cost_display', 'advance_paid_display',
+#         'status', 'created_at'
+#     )
+#     list_filter = ('status', 'origin_country')
+#     search_fields = ('client_name', 'client_email', 'vehicle__title', 'origin_country')
+#     readonly_fields = ('created_at', 'updated_at')
+#     list_editable = ('status',)
+#     actions = ['send_quote', 'mark_in_transit', 'mark_arrived']
+#
+#     fieldsets = (
+#         ('Véhicule', {
+#             'fields': ('vehicle',)
+#         }),
+#         ('Client', {
+#             'fields': ('client_name', 'client_email', 'client_phone', 'destination_city')
+#         }),
+#         ('Transport', {
+#             'fields': (
+#                 'origin_country', 'origin_city',
+#                 'estimated_cost', 'transport_note',
+#                 'customs_note'
+#             )
+#         }),
+#         ('Suivi financier', {
+#             'fields': ('advance_paid',)
+#         }),
+#         ('Statut & Notes', {
+#             'fields': ('status', 'admin_note')
+#         }),
+#         ('Dates', {
+#             'fields': ('created_at', 'updated_at'),
+#             'classes': ('collapse',)
+#         }),
+#     )
+#
+#     def estimated_cost_display(self, obj):
+#         if obj.estimated_cost:
+#             return f"{obj.estimated_cost:,.0f} FCFA"
+#         return "—"
+#     estimated_cost_display.short_description = "Coût estimé"
+#
+#     def advance_paid_display(self, obj):
+#         color = "green" if obj.advance_paid > 0 else "gray"
+#         return format_html(
+#             '<span style="color:{}">{} FCFA</span>',
+#             color, f"{obj.advance_paid:,.0f}"
+#         )
+#     advance_paid_display.short_description = "Avance payée"
+#
+#     @admin.action(description="📧 Marquer devis envoyé")
+#     def send_quote(self, request, queryset):
+#         count = queryset.update(status='quote_sent')
+#         self.message_user(request, f"Devis marqué comme envoyé pour {count} demande(s).")
+#
+#     @admin.action(description="🚢 Marquer en transit")
+#     def mark_in_transit(self, request, queryset):
+#         count = queryset.update(status='in_transit')
+#         self.message_user(request, f"{count} véhicule(s) marqué(s) en transit.")
+#
+#     @admin.action(description="🏁 Marquer arrivé au Togo")
+#     def mark_arrived(self, request, queryset):
+#         count = queryset.update(status='arrived')
+#         self.message_user(request, f"{count} véhicule(s) arrivé(s) au Togo.")
