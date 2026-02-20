@@ -1,5 +1,3 @@
-# orders/models.py
-
 from django.db import models
 from django.conf import settings
 from catalog.models import Vehicle, SparePart
@@ -60,10 +58,20 @@ class Rental(models.Model):
 
     @property
     def duration_days(self):
-        return (self.end_date - self.start_date).days
+        if self.start_date and self.end_date:
+            return (self.end_date - self.start_date).days
+        return 0
+
+    # @property
+    # def remaining_balance(self):
+    #     return self.total_price - self.amount_paid
 
     @property
     def remaining_balance(self):
+        if self.total_price is None:
+            return 0
+        if self.amount_paid is None:
+            return self.total_price
         return self.total_price - self.amount_paid
 
 
